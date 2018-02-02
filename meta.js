@@ -191,6 +191,7 @@ module.exports = {
         'test/e2e/**/*': 'e2e',
         'src/router/**/*': 'router',
         "src/store/**/*": "vuex",
+        "src/style/**/*": "sass"
     },
     complete: function (data, {chalk}) {
         const green = chalk.green

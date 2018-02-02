@@ -28,7 +28,34 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap
     }
   }
+  {{#sass}}
+  function resolveResouce(name) {
+    return path.resolve(__dirname, '../src/style/' + name);
+  }
 
+  function generateSassResourceLoader() {
+    var loaders = [
+      cssLoader,
+      // 'postcss-loader',
+      'sass-loader',
+      {
+        loader: 'sass-resources-loader',
+        options: {
+          // it need a absolute path
+          resources: [resolveResouce('var.scss')]
+        }
+      }
+    ];
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+  }
+  {{/sass}}
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
@@ -59,8 +86,10 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
+    {{#if_eq sass false}}sass: generateLoaders('sass', { indentedSyntax: true }),
+    scss: generateLoaders('sass'),{{/if_eq}}{{#sass}}
+    sass: generateSassResourceLoader(),
+    scss: generateSassResourceLoader(),{{/sass}}
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
   }
