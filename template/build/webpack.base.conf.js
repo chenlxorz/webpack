@@ -3,7 +3,6 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -20,10 +19,12 @@ function resolve (dir) {
 }){{/lint}}
 
 module.exports = {
-  context: path.resolve(__dirname, '../'),
+  context: path.resolve(__dirname, '../'),{{#babel-polyfill}}
+  entry:["babel-polyfill", "./src/main.js"],{{/babel-polyfill}}
+    {{#if_eq babel-polyfill true}}
   entry: {
     app: './src/main.js'
-  },
+  },{{/if_eq}}
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -38,6 +39,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       {{/if_eq}}
       '@': resolve('src'),
+      '@@': resolve('src/components')
     }
   },
   module: {
