@@ -194,7 +194,7 @@ module.exports = {
         "src/style/**/*": "sass",
         'src/helper/**/*': 'true',
         "src/global/**/*": "true",
-        "src/filtes/**/*": "true"
+        "src/filters/**/*": "true"
     },
     complete: function (data, {chalk}) {
         const green = chalk.green
